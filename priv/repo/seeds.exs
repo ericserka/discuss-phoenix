@@ -9,3 +9,7 @@
 #
 # We recommend using the bang functions (`insert!`, `update!`
 # and so on) as they will fail if something goes wrong.
+
+for comment <- ["Home Improvement", "Power Tools", "Gardening", "Books"] do
+  {:ok, _} = Discuss.Topics.create_comment(%{comment: comment, topic_id: 2})
+end

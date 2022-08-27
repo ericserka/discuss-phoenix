@@ -4,7 +4,7 @@ defmodule Discuss.Topics.Comment do
 
   schema "comments" do
     field :comment, :string
-    field :topic_id, :id
+    belongs_to :topic, Discuss.Topics.Topic
 
     timestamps()
   end
@@ -12,7 +12,7 @@ defmodule Discuss.Topics.Comment do
   @doc false
   def changeset(comment, attrs) do
     comment
-    |> cast(attrs, [:comment])
-    |> validate_required([:comment])
+    |> cast(attrs, [:comment, :topic_id])
+    |> validate_required([:comment, :topic_id])
   end
 end

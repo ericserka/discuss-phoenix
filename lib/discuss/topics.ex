@@ -18,7 +18,7 @@ defmodule Discuss.Topics do
 
   """
   def list_topics do
-    Repo.all(Topic)
+    Repo.all(Topic) |> Repo.preload([:comments])
   end
 
   @doc """
@@ -35,7 +35,7 @@ defmodule Discuss.Topics do
       ** (Ecto.NoResultsError)
 
   """
-  def get_topic!(id), do: Repo.get!(Topic, id)
+  def get_topic!(id), do: Repo.get!(Topic, id) |> Repo.preload([:comments])
 
   @doc """
   Creates a topic.
