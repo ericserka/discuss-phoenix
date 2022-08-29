@@ -1,26 +1,28 @@
-<h1>Listing Topics</h1>
+<h1 class="mt-4 text-5xl text-center mb-4">All Topics</h1>
 
-<table>
-  <thead>
-    <tr>
-      <th>Title</th>
+<div class="flex justify-center">
+  <table class="w-3/4 border-black border-2 border-solid">
+    <thead>
+      <tr>
+        <th class="text-left p-2 border-black border-2 border-solid" colspan="2">Title</th>
+      </tr>
+    </thead>
+    <tbody>
+  <%= for topic <- @topics do %>
+      <tr>
+        <td class="text-left border-black border-2 border-solid p-2"><%= topic.title %></td>
+        <td class="text-right border-black border-2 border-solid p-2">
+          <span class="hover:text-gray-600 hover:decoration-solid hover:underline"><%= link "Show", to: Routes.topic_path(@conn, :show, topic) %></span>
+          <span class="hover:text-gray-600 hover:decoration-solid hover:underline"><%= link "Edit", to: Routes.topic_path(@conn, :edit, topic) %></span>
+          <span class="hover:text-gray-600 hover:decoration-solid hover:underline"><%= link "Delete", to: Routes.topic_path(@conn, :delete, topic), method: :delete, data: [confirm: "Are you sure?"] %></span>
+        </td>
+      </tr>
+  <% end %>
+    </tbody>
+  </table>
+</div>
 
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-<%= for topic <- @topics do %>
-    <tr>
-      <td><%= topic.title %></td>
+<div class="flex justify-center mt-4">
+    <%= link "New Topic", to: Routes.topic_path(@conn, :new), class: "p-2 text-white font-bold bg-indigo-600 rounded-lg" %>
+</div>
 
-      <td>
-        <span><%= link "Show", to: Routes.topic_path(@conn, :show, topic) %></span>
-        <span><%= link "Edit", to: Routes.topic_path(@conn, :edit, topic) %></span>
-        <span><%= link "Delete", to: Routes.topic_path(@conn, :delete, topic), method: :delete, data: [confirm: "Are you sure?"] %></span>
-      </td>
-    </tr>
-<% end %>
-  </tbody>
-</table>
-
-<span><%= link "New Topic", to: Routes.topic_path(@conn, :new) %></span>
