@@ -1,13 +1,13 @@
 <.form let={f} for={@changeset} action={@action}>
   <%= if @changeset.action do %>
-    <div class="alert alert-danger">
-      <p>Oops, something went wrong! Please check the errors below.</p>
+    <div class="border-red-600 bg-red-200 border-2 rounded-lg p-4 border-solid mb-4">
+      <p class="text-red-600">Oops, something went wrong! Please check the errors below.</p>
     </div>
   <% end %>
 
-  <%= label f, :title %>
-  <%= text_input f, :title, placeholder: "Type the topic title", class: "form-control" %>
+  <%= label f, :title, class: "block" %>
+  <%= text_input f, :title, placeholder: "Type the topic title", class: "rounded-lg" %>
   <%= error_tag f, :title %>
 
-  <%= submit "Save topic", class: "waves-effect waves-light btn" %>
+  <%= submit "Save topic", class: "mt-4 rounded-lg bg-lime-600 hover:bg-lime-700 p-2 font-bold text-white" %>
 </.form>

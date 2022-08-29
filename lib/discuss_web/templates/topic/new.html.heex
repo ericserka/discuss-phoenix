@@ -1,5 +1,9 @@
-<h1>New Topic</h1>
-
-<%= render "form.html", Map.put(assigns, :action, Routes.topic_path(@conn, :create)) %>
-
-<span><%= link "Back", to: Routes.topic_path(@conn, :index) %></span>
+<div class="mt-4">
+    <h1 class="text-5xl text-center mb-4">New Topic</h1>
+    <div class="flex justify-center">
+        <%= render "form.html", Map.put(assigns, :action, Routes.topic_path(@conn, :create)) %>
+    </div>
+    <div class="flex justify-center mt-4">
+        <%= link "Back", to: Routes.topic_path(@conn, :index), class: "p-2 text-white font-bold bg-indigo-600 rounded-lg" %>
+    </div>
+</div>
