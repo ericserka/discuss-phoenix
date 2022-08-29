@@ -6,10 +6,8 @@
   <% end %>
 
   <%= label f, :title %>
-  <%= text_input f, :title %>
+  <%= text_input f, :title, placeholder: "Type the topic title", class: "form-control" %>
   <%= error_tag f, :title %>
 
-  <div>
-    <%= submit "Save" %>
-  </div>
+  <%= submit "Save topic", class: "waves-effect waves-light btn" %>
 </.form>
