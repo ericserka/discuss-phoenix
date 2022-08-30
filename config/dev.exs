@@ -2,10 +2,10 @@ import Config
 
 # Configure your database
 config :discuss, Discuss.Repo,
-  username: "eric.serka",
-  password: "",
-  hostname: "localhost",
+  username: System.get_env("DB_USER"),
+  password: System.get_env("DB_PASS"),
   database: "discuss_dev",
+  hostname: System.get_env("DB_HOST"),
   stacktrace: true,
   show_sensitive_data_on_connection_error: true,
   pool_size: 10

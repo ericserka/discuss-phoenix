@@ -1,5 +1,7 @@
 # Discuss
 
+To create new OAuth Github App: `https://github.com/settings/developers`
+
 To start your Phoenix server:
 
   * Install dependencies with `mix deps.get`
