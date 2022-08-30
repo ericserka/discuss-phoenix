@@ -50,8 +50,8 @@ defmodule Discuss.MixProject do
       {:jason, "~> 1.2"},
       {:plug_cowboy, "~> 2.5"},
       {:tailwind, "~> 0.1.8"},
-      {:ueberauth, "~> 0.10.2"},
-      {:ueberauth_github, "~> 0.7.0"},
+      {:ueberauth, "~> 0.7.0"},
+      {:ueberauth_github, "~> 0.8.1"},
       {:dotenv, "~> 3.1"}
     ]
   end

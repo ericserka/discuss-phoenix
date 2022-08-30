@@ -1,11 +1,12 @@
 import Config
 
 # Configure your database
+# mix ecto.migrate cannot read env. Thats a problem
 config :discuss, Discuss.Repo,
-  username: System.get_env("DB_USER"),
-  password: System.get_env("DB_PASS"),
+  username: System.get_env("DB_USER", "eric.serka"),
+  password: System.get_env("DB_PASS", "master1234"),
   database: "discuss_dev",
-  hostname: System.get_env("DB_HOST"),
+  hostname: System.get_env("DB_HOST", "localhost"),
   stacktrace: true,
   show_sensitive_data_on_connection_error: true,
   pool_size: 10

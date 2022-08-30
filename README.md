@@ -2,6 +2,8 @@
 
 To create new OAuth Github App: `https://github.com/settings/developers`
 
+Github Ueberauth Example Repository: https://github.com/ueberauth/ueberauth_example
+
 To start your Phoenix server:
 
   * Install dependencies with `mix deps.get`
