@@ -4,6 +4,9 @@ defmodule DiscussWeb.TopicController do
   alias Discuss.Topics
   alias Discuss.Topics.Topic
 
+  # scoped plug
+  plug DiscussWeb.Plugs.RequireAuth when action not in [:index, :show]
+
   def index(conn, _params) do
     topics = Topics.list_topics()
     render(conn, "index.html", topics: topics)
