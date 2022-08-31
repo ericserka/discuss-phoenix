@@ -7,17 +7,6 @@ defmodule Discuss.UserFromAuth do
 
   alias Ueberauth.Auth
   alias Discuss.Users
-  alias Discuss.Users.User
-
-  def return_user(%Auth{provider: :identity} = auth) do
-    case validate_pass(auth.credentials) do
-      :ok ->
-        insert_or_update_user(auth)
-
-      {:error, reason} ->
-        {:error, reason}
-    end
-  end
 
   def return_user(%Auth{} = auth) do
     insert_or_update_user(auth)
@@ -84,18 +73,4 @@ defmodule Discuss.UserFromAuth do
   defp provider_from_auth(auth) do
     Atom.to_string(auth.provider)
   end
-
-  defp validate_pass(%{other: %{password: nil}}) do
-    {:error, "Password required"}
-  end
-
-  defp validate_pass(%{other: %{password: pw, password_confirmation: pw}}) do
-    :ok
-  end
-
-  defp validate_pass(%{other: %{password: _}}) do
-    {:error, "Passwords do not match"}
-  end
-
-  defp validate_pass(_), do: {:error, "Password Required"}
 end

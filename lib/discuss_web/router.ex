@@ -8,6 +8,7 @@ defmodule DiscussWeb.Router do
     plug :put_root_layout, {DiscussWeb.LayoutView, :root}
     plug :protect_from_forgery
     plug :put_secure_browser_headers
+    plug DiscussWeb.Plugs.SetUser
   end
 
   pipeline :api do
@@ -24,6 +25,8 @@ defmodule DiscussWeb.Router do
   scope "/auth", DiscussWeb do
     pipe_through :browser
 
+    # order here matters, logout must come first
+    get "/signout", AuthController, :delete
     # This request function is defined by the Ueberauth
     get "/:provider", AuthController, :request
     get "/:provider/callback", AuthController, :callback
