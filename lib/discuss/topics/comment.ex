@@ -5,6 +5,7 @@ defmodule Discuss.Topics.Comment do
   schema "comments" do
     field :comment, :string
     belongs_to :topic, Discuss.Topics.Topic
+    belongs_to :user, Discuss.Users.User
 
     timestamps()
   end
@@ -12,7 +13,7 @@ defmodule Discuss.Topics.Comment do
   @doc false
   def changeset(comment, attrs) do
     comment
-    |> cast(attrs, [:comment, :topic_id])
-    |> validate_required([:comment, :topic_id])
+    |> cast(attrs, [:comment])
+    |> validate_required([:comment])
   end
 end
