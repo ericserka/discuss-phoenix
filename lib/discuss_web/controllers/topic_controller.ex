@@ -4,8 +4,11 @@ defmodule DiscussWeb.TopicController do
   alias Discuss.Topics
   alias Discuss.Topics.Topic
 
-  # scoped plug
+  # scoped module plug
   plug DiscussWeb.Plugs.RequireAuth when action not in [:index, :show]
+
+  # function plug
+  plug :check_topic_owner when action in [:update, :edit, :delete]
 
   def index(conn, _params) do
     topics = Topics.list_topics()
@@ -61,5 +64,16 @@ defmodule DiscussWeb.TopicController do
     conn
     |> put_flash(:info, "Topic deleted successfully.")
     |> redirect(to: Routes.topic_path(conn, :index))
+  end
+
+  def check_topic_owner(%{params: %{"id" => topic_id}} = conn, _params) do
+    if Topics.get_topic!(topic_id).user_id == conn.assigns.user.id do
+      conn
+    else
+      conn
+      |> put_flash(:error, "This topic does not belong to you.")
+      |> redirect(to: "/")
+      |> halt
+    end
   end
 end

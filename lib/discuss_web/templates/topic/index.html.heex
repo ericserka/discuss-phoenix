@@ -13,8 +13,11 @@
         <td class="text-left border-black border-2 border-solid p-2"><%= topic.title %></td>
         <td class="text-right border-black border-2 border-solid p-2">
           <span class="hover:text-gray-600 hover:decoration-solid hover:underline"><%= link "Show", to: Routes.topic_path(@conn, :show, topic) %></span>
-          <span class="hover:text-gray-600 hover:decoration-solid hover:underline"><%= link "Edit", to: Routes.topic_path(@conn, :edit, topic) %></span>
-          <span class="hover:text-gray-600 hover:decoration-solid hover:underline"><%= link "Delete", to: Routes.topic_path(@conn, :delete, topic), method: :delete, data: [confirm: "Are you sure?"] %></span>
+          <%# @conn.assigns.user != nil checks if the user is at least authenticated %>
+          <%= if @conn.assigns.user != nil and topic.user_id === @conn.assigns.user.id do %>
+            <span class="hover:text-gray-600 hover:decoration-solid hover:underline"><%= link "Edit", to: Routes.topic_path(@conn, :edit, topic) %></span>
+            <span class="hover:text-gray-600 hover:decoration-solid hover:underline"><%= link "Delete", to: Routes.topic_path(@conn, :delete, topic), method: :delete, data: [confirm: "Are you sure?"] %></span>
+          <% end %>
         </td>
       </tr>
   <% end %>
