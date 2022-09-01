@@ -9,6 +9,7 @@ defmodule Discuss.Users.User do
     field :provider, :string
     field :provider_id, :integer
     field :token, :string
+    has_many :topics, Discuss.Topics.Topic
 
     timestamps()
   end

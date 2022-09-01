@@ -18,7 +18,7 @@ defmodule DiscussWeb.TopicController do
   end
 
   def create(conn, %{"topic" => topic_params}) do
-    case Topics.create_topic(topic_params) do
+    case Topics.create_topic(topic_params, conn.assigns.user) do
       {:ok, topic} ->
         conn
         |> put_flash(:info, "Topic created successfully.")

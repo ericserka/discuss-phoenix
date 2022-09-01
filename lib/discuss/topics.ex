@@ -5,7 +5,7 @@ defmodule Discuss.Topics do
 
   import Ecto.Query, warn: false
   alias Discuss.Repo
-
+  import Ecto
   alias Discuss.Topics.Topic
 
   @doc """
@@ -49,8 +49,9 @@ defmodule Discuss.Topics do
       {:error, %Ecto.Changeset{}}
 
   """
-  def create_topic(attrs \\ %{}) do
-    %Topic{}
+  def create_topic(attrs \\ %{}, user) do
+    # build_assoc insert user struct in topic struct for database persistence with association (user_id in topics table)
+    build_assoc(user, :topics)
     |> Topic.changeset(attrs)
     |> Repo.insert()
   end
