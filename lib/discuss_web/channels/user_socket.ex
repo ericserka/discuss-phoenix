@@ -21,7 +21,7 @@ defmodule DiscussWeb.UserSocket do
   # performing token verification on connect.
   @impl true
   def connect(%{"token" => token}, socket, _connect_info) do
-    case Phoenix.Token.verify(socket, System.get_env("TOKEN_SECRET_KEY"), token) do
+    case Phoenix.Token.verify(socket, System.get_env("SECRET_KEY_BASE"), token) do
       {:ok, user} ->
         {:ok, assign(socket, :user, user)}
 
