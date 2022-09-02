@@ -29,15 +29,15 @@ defmodule Discuss.Topics do
 
   ## Examples
 
-      iex> get_topic!(123)
+      iex> get_topic(123)
       %Topic{}
 
-      iex> get_topic!(456)
-      ** (Ecto.NoResultsError)
+      iex> get_topic(456)
+      nil
 
   """
   # select the topic by the id, get all the comments of that topic and, for each comment, get the data of the user who made the comment
-  def get_topic!(id), do: Repo.get!(Topic, id) |> Repo.preload(comments: [:user])
+  def get_topic(id), do: Repo.get(Topic, id) |> Repo.preload(comments: [:user])
 
   @doc """
   Creates a topic.

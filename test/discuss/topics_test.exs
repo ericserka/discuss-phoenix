@@ -15,9 +15,9 @@ defmodule Discuss.TopicsTest do
       assert Topics.list_topics() == [topic]
     end
 
-    test "get_topic!/1 returns the topic with given id" do
+    test "get_topic/1 returns the topic with given id" do
       topic = topic_fixture()
-      assert Topics.get_topic!(topic.id) == topic
+      assert Topics.get_topic(topic.id) == topic
     end
 
     test "create_topic/1 with valid data creates a topic" do
@@ -42,13 +42,13 @@ defmodule Discuss.TopicsTest do
     test "update_topic/2 with invalid data returns error changeset" do
       topic = topic_fixture()
       assert {:error, %Ecto.Changeset{}} = Topics.update_topic(topic, @invalid_attrs)
-      assert topic == Topics.get_topic!(topic.id)
+      assert topic == Topics.get_topic(topic.id)
     end
 
     test "delete_topic/1 deletes the topic" do
       topic = topic_fixture()
       assert {:ok, %Topic{}} = Topics.delete_topic(topic)
-      assert_raise Ecto.NoResultsError, fn -> Topics.get_topic!(topic.id) end
+      assert_raise Ecto.NoResultsError, fn -> Topics.get_topic(topic.id) end
     end
 
     test "change_topic/1 returns a topic changeset" do
