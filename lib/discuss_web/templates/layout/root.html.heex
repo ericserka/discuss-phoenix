@@ -10,7 +10,7 @@
     <script defer phx-track-static type="text/javascript" src={Routes.static_path(@conn, "/assets/app.js")}></script>
     <%= if @conn.assigns.user do %>
       <script>
-          window.userToken = `<%= Phoenix.Token.sign(DiscussWeb.Endpoint, System.get_env("TOKEN_SECRET_KEY"), @conn.assigns.user.id) %>`
+          window.userToken = `<%= Phoenix.Token.sign(DiscussWeb.Endpoint, System.get_env("TOKEN_SECRET_KEY"), @conn.assigns.user) %>`
       </script>
     <% end %>
   </head>

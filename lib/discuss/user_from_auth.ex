@@ -9,10 +9,10 @@ defmodule Discuss.UserFromAuth do
   alias Discuss.Users
 
   def return_user(%Auth{} = auth) do
-    insert_or_update_user(auth)
+    insert_or_get_user(auth)
   end
 
-  defp insert_or_update_user(auth) do
+  defp insert_or_get_user(auth) do
     case Users.get_user(provider: basic_info(auth).provider, provider_id: auth.uid) do
       nil ->
         Users.create_user(basic_info(auth))

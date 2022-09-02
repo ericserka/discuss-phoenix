@@ -13,7 +13,7 @@ defmodule DiscussWeb.UserSocket do
   # verification, you can put default assigns into
   # the socket that will be set for all channels, ie
   #
-  #     {:ok, assign(socket, :user_id, user_id)}
+  #     {:ok, assign(socket, :user, user)}
   #
   # To deny connection, return `:error`.
   #
@@ -22,8 +22,8 @@ defmodule DiscussWeb.UserSocket do
   @impl true
   def connect(%{"token" => token}, socket, _connect_info) do
     case Phoenix.Token.verify(socket, System.get_env("TOKEN_SECRET_KEY"), token) do
-      {:ok, user_id} ->
-        {:ok, assign(socket, :user_id, user_id)}
+      {:ok, user} ->
+        {:ok, assign(socket, :user, user)}
 
       # ideally it should return :error, but I wanted to force the connection even if the user was not authenticated so that he could at least see the comments of a certain topic
       {:error, _error} ->

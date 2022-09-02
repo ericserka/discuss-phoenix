@@ -23,7 +23,7 @@ defmodule DiscussWeb.AuthController do
       {:ok, user} ->
         conn
         |> put_flash(:info, "Successfully authenticated.")
-        |> put_session(:user_id, user.id)
+        |> put_session(:user, user)
         |> redirect(to: Routes.topic_path(conn, :index))
 
       {:error, reason} ->

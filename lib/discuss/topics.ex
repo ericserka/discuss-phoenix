@@ -117,8 +117,8 @@ defmodule Discuss.Topics do
       {:error, %Ecto.Changeset{}}
 
   """
-  def create_comment(attrs \\ %{}, topic, user_id) do
-    build_assoc(topic, :comments, user_id: user_id)
+  def create_comment(attrs \\ %{}, topic, user) do
+    %Comment{topic: topic, user: user}
     |> Comment.changeset(attrs)
     |> Repo.insert()
   end

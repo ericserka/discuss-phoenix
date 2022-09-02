@@ -1,6 +1,5 @@
 defmodule DiscussWeb.Plugs.SetUser do
   import Plug.Conn
-  alias Discuss.Users
 
   # that is nothing to do in init function in this case
   # usually sets a default value for something (timezone for example)
@@ -11,14 +10,12 @@ defmodule DiscussWeb.Plugs.SetUser do
   # the second argument of call function is the value returned by init
   # runs whenever a request arrives
   def call(conn, _) do
-    user_id = get_session(conn, :user_id)
-
-    cond do
-      user = user_id && Users.get_user(id: user_id) ->
-        assign(conn, :user, user)
-
-      true ->
+    case get_session(conn, :user) do
+      nil ->
         assign(conn, :user, nil)
+
+      user ->
+        assign(conn, :user, user)
     end
   end
 end

@@ -17,7 +17,7 @@ defmodule DiscussWeb.CommentsChannel do
   # the one below handles the event of the user clicking to add a comment to the topic
   @impl true
   def handle_in("comments:add", payload, socket) do
-    case Topics.create_comment(payload, socket.assigns.topic, socket.assigns.user_id) do
+    case Topics.create_comment(payload, socket.assigns.topic, socket.assigns.user) do
       {:ok, comment} ->
         broadcast!(socket, "comments:#{socket.assigns.topic.id}:new", %{comment: comment})
         {:reply, :ok, socket}
