@@ -4,7 +4,7 @@ The "Discuss" application simulates a forum where comments can be added in real 
 
 It uses dependencies that allow login with GitHub (Ueberauth) and uses plugs to make the application safer and less susceptible to external attacks. Where the user can only perform certain actions if they are logged in or if they really own the topic, etc.
 
-To create new OAuth Github App: `https://github.com/settings/developers`
+To create new OAuth Github App: https://github.com/settings/developers
 
 Github Ueberauth Example Repository: https://github.com/ueberauth/ueberauth_example
 
