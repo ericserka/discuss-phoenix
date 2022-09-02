@@ -2,6 +2,9 @@ defmodule Discuss.Users.User do
   use Ecto.Schema
   import Ecto.Changeset
 
+  # used to transform elixir struct into json
+  @derive {Jason.Encoder, only: [:avatar, :name]}
+
   schema "users" do
     field :avatar, :string
     field :email, :string

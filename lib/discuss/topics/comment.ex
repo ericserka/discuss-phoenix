@@ -1,6 +1,8 @@
 defmodule Discuss.Topics.Comment do
   use Ecto.Schema
   import Ecto.Changeset
+  # used to transform elixir struct into json
+  @derive {Jason.Encoder, only: [:comment, :user, :inserted_at]}
 
   schema "comments" do
     field :comment, :string

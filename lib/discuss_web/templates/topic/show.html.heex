@@ -1,13 +1,24 @@
-<h1>Show Topic</h1>
+<script>
+  document.addEventListener("DOMContentLoaded", ()=> {
+    window.createSocket("<%= @topic.id %>")
+  })
+</script>
 
-<ul>
+<h1 class="text-center text-6xl font-bold"><%= @topic.title %></h1>
 
-  <li>
-    <strong>Title:</strong>
-    <%= @topic.title %>
-  </li>
-
-</ul>
-
-<span><%= link "Edit", to: Routes.topic_path(@conn, :edit, @topic) %></span> |
-<span><%= link "Back", to: Routes.topic_path(@conn, :index) %></span>
+<div class="m-4">
+  <%# prohibits the creation of a comment if the user is not authenticated %>
+  <%= if @conn.assigns.user != nil do %>
+    <textarea class="p-1 w-full"/>
+    <div class="flex justify-center">
+      <button class="rounded-lg bg-lime-600 enabled:hover:bg-lime-700 p-2 font-bold text-white">
+        Add comment
+      </button>
+      <%= link "Back", to: Routes.topic_path(@conn, :index), class: "p-2 text-white font-bold bg-indigo-600 rounded-lg ml-4" %>
+    </div>
+  <% end %> 
+  <ul id="comments-list" class="mt-4"></ul>
+</div>
+<div class="flex justify-center m-4">
+  <%= link "Back", to: Routes.topic_path(@conn, :index), class: "p-2 text-white font-bold bg-indigo-600 rounded-lg" %>
+</div>

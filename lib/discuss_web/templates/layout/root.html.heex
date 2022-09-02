@@ -8,6 +8,11 @@
     <%= live_title_tag assigns[:page_title] || "Discuss", suffix: " · Phoenix Framework" %>
     <link phx-track-static rel="stylesheet" href={Routes.static_path(@conn, "/assets/app.css")}/>
     <script defer phx-track-static type="text/javascript" src={Routes.static_path(@conn, "/assets/app.js")}></script>
+    <%= if @conn.assigns.user do %>
+      <script>
+          window.userToken = `<%= Phoenix.Token.sign(DiscussWeb.Endpoint, System.get_env("TOKEN_SECRET_KEY"), @conn.assigns.user.id) %>`
+      </script>
+    <% end %>
   </head>
   <body>
     <nav class="bg-amber-300 mb-6 flex justify-between">

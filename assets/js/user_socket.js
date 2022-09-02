@@ -2,63 +2,74 @@
 // you uncomment its entry in "assets/js/app.js".
 
 // Bring in Phoenix channels client library:
-import {Socket} from "phoenix"
+import { Socket } from "phoenix"
+import { sortArrOfObjsByPropertyValue } from "./snippets"
 
 // And connect to the path in "lib/discuss_web/endpoint.ex". We pass the
 // token for authentication. Read below how it should be used.
-let socket = new Socket("/socket", {params: {token: window.userToken}})
+let socket = new Socket("/socket", { params: { token: window.userToken } })
 
 // When you connect, you'll often need to authenticate the client.
-// For example, imagine you have an authentication plug, `MyAuth`,
-// which authenticates the session and assigns a `:current_user`.
-// If the current user exists you can assign the user's token in
-// the connection for use in the layout.
-//
-// In your "lib/discuss_web/router.ex":
-//
-//     pipeline :browser do
-//       ...
-//       plug MyAuth
-//       plug :put_user_token
-//     end
-//
-//     defp put_user_token(conn, _) do
-//       if current_user = conn.assigns[:current_user] do
-//         token = Phoenix.Token.sign(conn, "user socket", current_user.id)
-//         assign(conn, :user_token, token)
-//       else
-//         conn
-//       end
-//     end
-//
-// Now you need to pass this token to JavaScript. You can do so
-// inside a script tag in "lib/discuss_web/templates/layout/app.html.heex":
-//
-//     <script>window.userToken = "<%= assigns[:user_token] %>";</script>
-//
-// You will need to verify the user token in the "connect/3" function
-// in "lib/discuss_web/channels/user_socket.ex":
-//
-//     def connect(%{"token" => token}, socket, _connect_info) do
-//       # max_age: 1209600 is equivalent to two weeks in seconds
-//       case Phoenix.Token.verify(socket, "user socket", token, max_age: 1_209_600) do
-//         {:ok, user_id} ->
-//           {:ok, assign(socket, :user, user_id)}
-//
-//         {:error, reason} ->
-//           :error
-//       end
-//     end
-//
 // Finally, connect to the socket:
 socket.connect()
 
 // Now that you are connected, you can join channels with a topic.
-// Let's assume you have a channel with a topic named `room` and the
-// subtopic is its id - in this case 42:
-let channel = socket.channel("room:42", {})
-channel.join()
-  .receive("ok", resp => { console.log("Joined successfully", resp) })
-  .receive("error", resp => { console.log("Unable to join", resp) })
+const createSocket = (topicId) => {
+  let channel = socket.channel(`comments:${topicId}`, {})
+  channel
+    .join()
+    .receive("ok", (resp) => {
+      renderComments(resp.comments)
+    })
+    .receive("error", (resp) => {
+      console.log("Unable to join", resp)
+    })
 
-export default socket
+  // server broadcast
+  channel.on(`comments:${topicId}:new`, renderNewComment)
+  document.querySelector("button").addEventListener("click", () => {
+    channel.push("comments:add", {
+      comment: document.querySelector("textarea").value,
+    })
+  })
+}
+
+const renderComments = (comments) => {
+  // sorting on the client since I haven't figured out how to sort in phoenix using ecto
+  document.getElementById("comments-list").innerHTML =
+    sortArrOfObjsByPropertyValue(comments, "inserted_at")
+      .map((c) => commentTemplate(c))
+      .join("")
+}
+
+// it is necessary to destructure the socket event object to get to the comment itself
+const renderNewComment = ({ comment }) => {
+  // the new comment is inserted at the top
+  document.getElementById("comments-list").innerHTML =
+    commentTemplate(comment) +
+    document.getElementById("comments-list").innerHTML
+}
+
+const commentTemplate = (comment) => {
+  return `
+  <li class="border border-black w-full p-3 mb-3 flex justify-between">
+    <div class="w-full">
+      <img src=${
+        comment.user?.avatar ??
+        "https://pro2-bar-s3-cdn-cf2.myportfolio.com/c728a553-9706-473c-adca-fa2ea3652db5/df42f6b2-c2f9-4098-8669-bb34edf7b86a_rw_1200.jpg?h=15c65396d99657045b69631683b0a3d6"
+      } class="w-12 h-12"/>
+      <p>
+        ${comment.user?.name ?? "Anonymous"}
+      </p>
+      <p>
+        ${comment.inserted_at}
+      </p>
+    </div>
+    <div>
+      ${comment.comment}
+    </div>
+  </li>
+  `
+}
+
+window.createSocket = createSocket
