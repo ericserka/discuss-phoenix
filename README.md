@@ -4,8 +4,6 @@ The "Discuss" application simulates a forum where comments can be added in real 
 
 It uses dependencies that allow login with GitHub (Ueberauth) and uses plugs to make the application safer and less susceptible to external attacks. Where the user can only perform certain actions if they are logged in or if they really own the topic, etc.
 
-To create new OAuth Github App: https://github.com/settings/developers
-
 Github Ueberauth Example Repository: https://github.com/ueberauth/ueberauth_example
 
 ## Useful mix commands for Phoenix framework
@@ -23,7 +21,9 @@ Github Ueberauth Example Repository: https://github.com/ueberauth/ueberauth_exam
 To start your Phoenix server:
 
   * Install dependencies with `mix deps.get`
-  * Create an .env file from the .env.example and fill it in. You can create an SECRET_KEY_BASE using the `mix phx.gen.secret` command
+  * Create an .env file from the .env.example and fill it in
+  * You can create an SECRET_KEY_BASE using the `mix phx.gen.secret` command
+  * To create new OAuth Github App (required to populate .env GITHUB_CLIENT_ID and GITHUB_CLIENT_SECRET fields): https://github.com/settings/developers
   * Create and migrate your database with `mix ecto.setup`
   * Start Phoenix endpoint with `mix phx.server` or inside IEx with `iex -S mix phx.server`
 
