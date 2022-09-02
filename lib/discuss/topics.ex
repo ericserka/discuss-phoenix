@@ -36,6 +36,7 @@ defmodule Discuss.Topics do
       ** (Ecto.NoResultsError)
 
   """
+  # select the topic by the id, get all the comments of that topic and, for each comment, get the data of the user who made the comment
   def get_topic!(id), do: Repo.get!(Topic, id) |> Repo.preload(comments: [:user])
 
   @doc """
