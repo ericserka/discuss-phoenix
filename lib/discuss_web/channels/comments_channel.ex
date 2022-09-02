@@ -13,8 +13,8 @@ defmodule DiscussWeb.CommentsChannel do
 
   # Channels can be used in a request/response fashion
   # by sending replies to requests from the client
-  # I was kind of in doubt with this handle_in
-  # worth researching and studying more about it
+  # for each event that the client can push, I need a different handle_in
+  # the one below handles the event of the user clicking to add a comment to the topic
   @impl true
   def handle_in("comments:add", payload, socket) do
     case Topics.create_comment(payload, socket.assigns.topic, socket.assigns.user_id) do
