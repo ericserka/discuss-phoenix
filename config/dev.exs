@@ -2,9 +2,10 @@ import Config
 
 # Configure your database
 # mix ecto.migrate cannot read env. Thats a problem
+# the second argument of the get_env function is the default value that will be returned if it does not find any environment variable with the name of the first argument
 config :discuss, Discuss.Repo,
-  username: System.get_env("DB_USER", "eric.serka"),
-  password: System.get_env("DB_PASS", "master1234"),
+  username: System.get_env("DB_USER", "postgres"),
+  password: System.get_env("DB_PASS", "postgres"),
   database: "discuss_dev",
   hostname: System.get_env("DB_HOST", "localhost"),
   stacktrace: true,
