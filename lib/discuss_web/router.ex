@@ -18,7 +18,7 @@ defmodule DiscussWeb.Router do
   scope "/", DiscussWeb do
     pipe_through :browser
 
-    get "/", TopicController, :index
+    get "/", TopicController, :index_redirect
     resources "/topics", TopicController
   end
 

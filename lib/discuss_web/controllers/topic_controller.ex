@@ -10,9 +10,14 @@ defmodule DiscussWeb.TopicController do
   # function plug
   plug :check_topic_owner when action in [:update, :edit, :delete]
 
-  def index(conn, _params) do
-    topics = Topics.list_topics()
-    render(conn, "index.html", topics: topics)
+  def index(conn, %{"current_page" => current_page}) do
+    {topics, total, page} = Topics.list_topics(String.to_integer(current_page))
+    render(conn, "index.html", topics: topics, total: total, page: page)
+  end
+
+  def index_redirect(conn, _) do
+    conn
+    |> redirect(to: Routes.topic_path(conn, :index, current_page: 1))
   end
 
   def new(conn, _params) do

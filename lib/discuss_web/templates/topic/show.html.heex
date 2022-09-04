@@ -11,14 +11,14 @@
   <%= if @conn.assigns.user != nil do %>
     <textarea class="p-1 w-full"/>
     <div class="flex justify-center">
-      <button class="rounded-lg bg-lime-600 enabled:hover:bg-lime-700 p-2 font-bold text-white">
+      <button class="btn-primary">
         Add comment
       </button>
-      <%= link "Back", to: Routes.topic_path(@conn, :index), class: "p-2 text-white font-bold bg-indigo-600 rounded-lg ml-4" %>
+      <%= link "Back", to: Routes.topic_path(@conn, :index), class: "btn-secondary ml-4" %>
     </div>
   <% end %> 
   <ul id="comments-list" class="mt-4"></ul>
 </div>
 <div class="flex justify-center m-4">
-  <%= link "Back", to: Routes.topic_path(@conn, :index), class: "p-2 text-white font-bold bg-indigo-600 rounded-lg" %>
+  <%= link "Back", to: Routes.topic_path(@conn, :index), class: "btn-secondary" %>
 </div>

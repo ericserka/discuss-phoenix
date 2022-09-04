@@ -1,0 +1,8 @@
+@layer components {
+    .btn-primary {
+        @apply rounded-lg bg-lime-600 enabled:hover:bg-lime-700 p-2 font-bold text-white;
+    }
+    .btn-secondary {
+        @apply p-2 text-white font-bold bg-indigo-600 rounded-lg;
+    }
+}

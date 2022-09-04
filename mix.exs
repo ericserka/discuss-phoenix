@@ -52,7 +52,8 @@ defmodule Discuss.MixProject do
       {:tailwind, "~> 0.1.8"},
       {:ueberauth, "~> 0.7.0"},
       {:ueberauth_github, "~> 0.8.1"},
-      {:dotenv, "~> 3.1"}
+      {:dotenv, "~> 3.1"},
+      {:dart_sass, "~> 0.5", runtime: Mix.env() == :dev}
     ]
   end
 
@@ -64,11 +65,21 @@ defmodule Discuss.MixProject do
   # See the documentation for `Mix` for more info on aliases.
   defp aliases do
     [
-      setup: ["deps.get", "ecto.setup"],
+      setup: ["deps.get", "ecto.setup", "assets.build"],
       "ecto.setup": ["ecto.create", "ecto.migrate", "run priv/repo/seeds.exs"],
       "ecto.reset": ["ecto.drop", "ecto.setup"],
       test: ["ecto.create --quiet", "ecto.migrate --quiet", "test"],
-      "assets.deploy": ["esbuild default --minify", "phx.digest"]
+      "assets.deploy": [
+        "esbuild default --minify",
+        "sass default",
+        "tailwind default --minify",
+        "phx.digest"
+      ],
+      "assets.build": [
+        "esbuild default",
+        "sass default",
+        "tailwind default"
+      ]
     ]
   end
 end

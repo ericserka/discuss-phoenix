@@ -4,6 +4,6 @@
         <%= render "form.html", Map.put(assigns, :action, Routes.topic_path(@conn, :update, @topic)) %>
     </div>
     <div class="flex justify-center mt-4">
-        <%= link "Back", to: Routes.topic_path(@conn, :index), class: "p-2 text-white font-bold bg-indigo-600 rounded-lg" %>
+        <%= link "Back", to: Routes.topic_path(@conn, :index), class: "btn-secondary" %>
     </div>
 </div>

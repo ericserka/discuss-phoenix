@@ -1,5 +1,9 @@
 <h1 class="mt-4 text-5xl text-center mb-4">All Topics</h1>
 
+<div class="flex justify-center mt-4">
+  <%= link "New Topic", to: Routes.topic_path(@conn, :new), class: "btn-primary mb-4" %>
+</div>
+
 <div class="flex justify-center">
   <table class="w-3/4 border-black border-2 border-solid">
     <thead>
@@ -26,6 +30,10 @@
 </div>
 
 <div class="flex justify-center mt-4">
-    <%= link "New Topic", to: Routes.topic_path(@conn, :new), class: "p-2 text-white font-bold bg-indigo-600 rounded-lg mb-4" %>
+  <%= if @page > 1 do %>
+    <%= link "Previous page", to: Routes.topic_path(@conn, :index, current_page: @page - 1), class: "btn-secondary" %>
+  <% end %>
+  <%= if @page * 5 < @total do %>
+    <%= link "Next page", to: Routes.topic_path(@conn, :index, current_page: @page + 1), class: "btn-secondary ml-8" %>
+  <% end %>
 </div>
-

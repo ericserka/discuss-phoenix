@@ -15,11 +15,20 @@ defmodule Discuss.Topics do
   ## Examples
 
       iex> list_topics()
-      [%Topic{}, ...]
+      {[%Topic{}, ...],1}
 
   """
-  def list_topics do
-    Repo.all(from t in Topic, order_by: [asc: :title])
+  def list_topics(current_page \\ 1) do
+    {
+      Repo.all(
+        from t in Topic,
+          order_by: [asc: :title],
+          offset: ^((current_page - 1) * 5),
+          limit: 5
+      ),
+      Repo.aggregate(Topic, :count),
+      current_page
+    }
   end
 
   @doc """
