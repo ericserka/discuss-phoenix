@@ -5,7 +5,7 @@ defmodule DiscussWeb.TopicController do
   alias Discuss.Topics.Topic
 
   # scoped module plug
-  plug DiscussWeb.Plugs.RequireAuth when action not in [:index, :show]
+  plug DiscussWeb.Plugs.RequireAuth when action not in [:index, :index_redirect, :show]
 
   # function plug
   plug :check_topic_owner when action in [:update, :edit, :delete]
@@ -15,9 +15,14 @@ defmodule DiscussWeb.TopicController do
     render(conn, "index.html", topics: topics, total: total, page: page)
   end
 
+  def index(conn, _params) do
+    {topics, total, page} = Topics.list_topics(1)
+    render(conn, "index.html", topics: topics, total: total, page: page)
+  end
+
   def index_redirect(conn, _) do
     conn
-    |> redirect(to: Routes.topic_path(conn, :index, current_page: 1))
+    |> redirect(to: Routes.topic_path(conn, :index))
   end
 
   def new(conn, _params) do

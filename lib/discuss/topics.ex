@@ -18,7 +18,7 @@ defmodule Discuss.Topics do
       {[%Topic{}, ...],1}
 
   """
-  def list_topics(current_page \\ 1) do
+  def list_topics(current_page) do
     {
       Repo.all(
         from t in Topic,
