@@ -1,13 +1,13 @@
 <div class="flex justify-center">
   <%= if get_flash(@conn, :info) do %>
-  <div class="border-sky-600 bg-sky-200 border-2 rounded-lg p-4 border-solid mb-4 w-1/4 flex justify-center">
+  <div x-data="{close: false}" @click="close = true" class="cursor-pointer border-sky-600 bg-sky-200 border-2 rounded-lg p-4 border-solid mb-4 w-1/4 flex justify-center" :class="{'hidden': close}">
     <p class="text-sky-600"><%= get_flash(@conn, :info) %></p>
   </div>
   <% end %>
   <%= if get_flash(@conn, :error) do %>
-    <div class="border-red-600 bg-red-200 border-2 rounded-lg p-4 border-solid mb-4 w-1/4 flex justify-center">
-      <p class="text-red-600"><%= get_flash(@conn, :error) %></p>
-    </div>
+  <div x-data="{close: false}" @click="close = true" class="cursor-pointer border-red-600 bg-red-200 border-2 rounded-lg p-4 border-solid mb-4 w-1/4 flex justify-center" :class="{'hidden': close}">
+    <p class="text-red-600"><%= get_flash(@conn, :error) %></p>
+  </div>
   <% end %>
 </div>
 <%= @inner_content %>

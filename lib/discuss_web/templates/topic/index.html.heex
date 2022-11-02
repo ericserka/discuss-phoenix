@@ -4,36 +4,94 @@
   <%= link "New Topic", to: Routes.topic_path(@conn, :new), class: "btn-primary mb-4" %>
 </div>
 
-<div class="flex justify-center">
-  <table class="w-3/4 border-black border-2 border-solid">
-    <thead>
-      <tr>
-        <th class="text-left p-2 border-black border-2 border-solid" colspan="2">Title</th>
-      </tr>
-    </thead>
-    <tbody>
-  <%= for topic <- @topics do %>
-      <tr>
-        <td class="text-left border-black border-2 border-solid p-2"><%= topic.title %></td>
-        <td class="text-right border-black border-2 border-solid p-2">
-          <span class="hover:text-gray-600 hover:decoration-solid hover:underline"><%= link "Show", to: Routes.topic_path(@conn, :show, topic) %></span>
-          <%# @conn.assigns.user != nil checks if the user is at least authenticated %>
-          <%= if @conn.assigns.user != nil and topic.user_id === @conn.assigns.user.id do %>
-            <span class="hover:text-gray-600 hover:decoration-solid hover:underline"><%= link "Edit", to: Routes.topic_path(@conn, :edit, topic) %></span>
-            <span class="hover:text-gray-600 hover:decoration-solid hover:underline"><%= link "Delete", to: Routes.topic_path(@conn, :delete, topic), method: :delete, data: [confirm: "Are you sure?"] %></span>
-          <% end %>
-        </td>
-      </tr>
-  <% end %>
-    </tbody>
-  </table>
-</div>
+<%= if !Enum.empty?(@topics) do %>
+  <div class="flex justify-center">
+    <table class="w-3/4 table-border">
+      <thead>
+        <tr>
+          <th class="text-left p-2 table-border" colspan="2">Title</th>
+        </tr>
+      </thead>
+      <tbody>
+    <%= for topic <- @topics do %>
+        <tr>
+          <td class="text-left table-border p-2"><%= topic.title %></td>
+          <td class="text-right table-border p-2">
+            <span class="topic-crud-link"><%= link "Show", to: Routes.topic_path(@conn, :show, topic) %></span>
+            <%# @conn.assigns.user != nil checks if the user is at least authenticated %>
+            <%= if @conn.assigns.user != nil and topic.user_id === @conn.assigns.user.id do %>
+              <span class="topic-crud-link"><%= link "Edit", to: Routes.topic_path(@conn, :edit, topic) %></span>
+              <span class="topic-crud-link"><%= link "Delete", to: Routes.topic_path(@conn, :delete, topic), method: :delete, data: [confirm: "Are you sure?"] %></span>
+            <% end %>
+          </td>
+        </tr>
+    <% end %>
+      </tbody>
+    </table>
+  </div>
 
-<div class="flex justify-center mt-4">
-  <%= if @page > 1 do %>
-    <%= link "Previous page", to: Routes.topic_path(@conn, :index, current_page: @page - 1), class: "btn-secondary" %>
-  <% end %>
-  <%= if @page * 5 < @total do %>
-    <%= link "Next page", to: Routes.topic_path(@conn, :index, current_page: @page + 1), class: "btn-secondary ml-8" %>
-  <% end %>
-</div>
+  <div class="flex justify-center mt-4">
+    <div class="flex items-center justify-between border-t border-gray-200 bg-white px-4 py-3 sm:px-6">
+      <div class="flex flex-1 items-center justify-between">
+        <div class="mr-4">
+          <p class="text-sm text-gray-700">
+            Showing
+            <span class="font-medium"><%= @from %></span>
+            to
+            <span class="font-medium"><%= @until %></span>
+            of
+            <span class="font-medium"><%= @total_elements %></span>
+            results
+          </p>
+        </div>
+        <div>
+          <nav class="isolate inline-flex -space-x-px rounded-md shadow-sm" aria-label="Pagination">
+            <%= if @page != 1 do %>
+              <%= link "<", to: Routes.topic_path(@conn, :index, page: @page - 1), class: "pagination-prev-next-btn rounded-l-md hover:bg-gray-50" %>
+            <% else %>
+              <span class="pagination-prev-next-btn rounded-l-md cursor-default">&lt;</span>
+            <% end %>
+            <div {@dynamic_attrs}>
+              <%= if @total_pages <= 7 do %>
+                <template x-for="page in pages">
+                  <a :href="`/topics?page=${page}`" class="page-idx-common" :class="currentPage === page ? 'activated-page-idx' : 'not-activated-page-idx'" x-text="page"></a>
+                </template>
+              <% else %>
+                <%= if @page < 1 + 4 do %>
+                  <template x-for="page in pages.slice(0, 5)">
+                    <a :href="`/topics?page=${page}`" class="page-idx-common" :class="currentPage === page ? 'activated-page-idx' : 'not-activated-page-idx'" x-text="page"></a>
+                  </template>
+                  <span class="pages-ellipsis">...</span>
+                  <%= link "#{@total_pages}", to: Routes.topic_path(@conn, :index, page: @total_pages), class: "page-idx-common not-activated-page-idx" %>
+                <% else %>
+                  <%= if @page > @total_pages - 4 do %>
+                    <%= link "1", to: Routes.topic_path(@conn, :index, page: 1), class: "page-idx-common not-activated-page-idx" %>
+                    <span class="pages-ellipsis">...</span>
+                    <template x-for="page in pages.slice(-5)">
+                      <a :href="`/topics?page=${page}`" class="page-idx-common" :class="currentPage === page ? 'activated-page-idx' : 'not-activated-page-idx'" x-text="page"></a>
+                    </template>
+                  <% else %>
+                    <%= link "1", to: Routes.topic_path(@conn, :index, page: 1), class: "page-idx-common not-activated-page-idx" %>
+                    <span class="pages-ellipsis">...</span>
+                    <template x-for="page in pages.slice(pages.indexOf(currentPage) - 1, pages.indexOf(currentPage) + 2)">
+                      <a :href="`/topics?page=${page}`" class="page-idx-common" :class="currentPage === page ? 'activated-page-idx' : 'not-activated-page-idx'" x-text="page"></a>
+                    </template>
+                    <span class="pages-ellipsis">...</span>
+                    <%= link "#{@total_pages}", to: Routes.topic_path(@conn, :index, page: @total_pages), class: "page-idx-common not-activated-page-idx" %>
+                  <% end %>
+                <% end %>
+              <% end %>
+            </div>
+            <%= if @page != @total_pages do %>
+              <%= link ">", to: Routes.topic_path(@conn, :index, page: @page + 1), class: "pagination-prev-next-btn rounded-r-md hover:bg-gray-50" %>
+            <% else %>
+              <span class="pagination-prev-next-btn rounded-r-md cursor-default">&gt;</span>
+            <% end %>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </div>
+<% else %>
+  <p class="text-center text-2xl">No topic found. Create a new one by clicking the button above.</p>
+<% end %>

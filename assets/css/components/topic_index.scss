@@ -1,0 +1,23 @@
+@layer components {
+    .table-border {
+        @apply border-black border-2 border-solid;
+    }
+    .topic-crud-link {
+        @apply hover:text-gray-600 hover:decoration-solid hover:underline;
+    }
+    .pagination-prev-next-btn {
+        @apply relative inline-flex items-center border border-gray-300 bg-white px-2 py-2 text-sm font-medium text-gray-500 focus:z-20;
+    }
+    .page-idx-common {
+        @apply relative inline-flex items-center border px-4 py-2 text-sm font-medium focus:z-20;
+    }
+    .activated-page-idx {
+        @apply z-10 border-indigo-500 bg-indigo-50 text-indigo-600;
+    }
+    .not-activated-page-idx {
+        @apply border-gray-300 bg-white text-gray-500 hover:bg-gray-50;
+    }
+    .pages-ellipsis {
+        @apply relative inline-flex items-center border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 cursor-default;
+    }
+}

@@ -9,6 +9,19 @@ defmodule Discuss.Topics do
   alias Discuss.Topics.Topic
   alias Discuss.Topics.Comment
 
+  @per_page 5
+
+  @doc """
+  Returns the per_page const.
+
+  ## Examples
+
+      iex> get_per_page()
+      5
+
+  """
+  def get_per_page(), do: @per_page
+
   @doc """
   Returns the list of topics.
 
@@ -18,16 +31,15 @@ defmodule Discuss.Topics do
       {[%Topic{}, ...],1}
 
   """
-  def list_topics(current_page) do
+  def list_topics(page) do
     {
-      Repo.all(
-        from t in Topic,
-          order_by: [asc: :title],
-          offset: ^((current_page - 1) * 5),
-          limit: 5
-      ),
+      Topic
+      |> order_by(:title)
+      |> offset(^((page - 1) * @per_page))
+      |> limit(@per_page)
+      |> Repo.all(),
       Repo.aggregate(Topic, :count),
-      current_page
+      page
     }
   end
 

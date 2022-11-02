@@ -24,7 +24,7 @@ To start your Phoenix server:
 - Create an .env file from the .env.example and fill it in
 - You can create an SECRET_KEY_BASE using the `mix phx.gen.secret` command
 - To create new OAuth Github App (required to populate .env GITHUB_CLIENT_ID and GITHUB_CLIENT_SECRET fields): https://github.com/settings/developers
-- Create and migrate your database with `mix ecto.setup`. Unfortunately, the environment variables of the created `.env` file are not loaded when executing this command. Then you will have to manually replace the database access data in the `dev.exs` file
+- Create, migrate your database and run `seeds.exs` with `mix ecto.setup`. Unfortunately, the environment variables of the created `.env` file are not loaded when executing this command. Then you will have to manually replace the database access data in the `dev.exs` file
 - Start Phoenix endpoint with `mix phx.server` or inside IEx with `iex -S mix phx.server`
 
 Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.

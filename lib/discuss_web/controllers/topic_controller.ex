@@ -10,19 +10,40 @@ defmodule DiscussWeb.TopicController do
   # function plug
   plug :check_topic_owner when action in [:update, :edit, :delete]
 
-  def index(conn, %{"current_page" => current_page}) do
-    {topics, total, page} = Topics.list_topics(String.to_integer(current_page))
-    render(conn, "index.html", topics: topics, total: total, page: page)
+  def index(conn, %{"page" => page_param}) do
+    {topics, total_elements, page} = Topics.list_topics(String.to_integer(page_param))
+    per_page = Topics.get_per_page()
+    total_pages = ceil(total_elements / per_page)
+    from = (page - 1) * per_page + 1
+    until = page * per_page
+
+    if page > total_pages do
+      conn
+      |> put_flash(:error, "Such page does not exist")
+      |> redirect(to: Routes.topic_path(conn, :index))
+    end
+
+    render(conn, "index.html",
+      topics: topics,
+      total_elements: total_elements,
+      page: page,
+      total_pages: total_pages,
+      dynamic_attrs: [
+        x_data: "{currentPage: #{page}, pages: #{Jason.encode!(Enum.to_list(1..total_pages))}}"
+      ],
+      from: from,
+      until: until
+    )
   end
 
   def index(conn, _params) do
-    {topics, total, page} = Topics.list_topics(1)
-    render(conn, "index.html", topics: topics, total: total, page: page)
+    conn
+    |> redirect(to: Routes.topic_path(conn, :index, page: 1))
   end
 
   def index_redirect(conn, _) do
     conn
-    |> redirect(to: Routes.topic_path(conn, :index))
+    |> redirect(to: Routes.topic_path(conn, :index, page: 1))
   end
 
   def new(conn, _params) do
