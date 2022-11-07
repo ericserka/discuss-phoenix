@@ -1,6 +1,6 @@
 <.form let={f} for={@changeset} action={@action}>
   <%= if @changeset.action do %>
-    <div class="border-red-600 bg-red-200 border-2 rounded-lg p-4 border-solid mb-4">
+    <div x-data="{open: true}" @click="open = false" class="cursor-pointer border-red-600 bg-red-200 border-2 rounded-lg p-4 border-solid mb-4" x-show="open" x-transition>
       <p class="text-red-600">Oops, something went wrong! Please check the errors below.</p>
     </div>
   <% end %>
