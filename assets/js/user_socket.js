@@ -2,53 +2,50 @@
 // you uncomment its entry in "assets/js/app.js".
 
 // Bring in Phoenix channels client library:
-import { Socket } from "phoenix"
-import { sortArrOfObjsByPropertyValue } from "./snippets"
+import { Socket } from "phoenix";
 
 // And connect to the path in "lib/discuss_web/endpoint.ex". We pass the
 // token for authentication. Read below how it should be used.
-let socket = new Socket("/socket", { params: { token: window.userToken } })
+let socket = new Socket("/socket", { params: { token: window.userToken } });
 
 // When you connect, you'll often need to authenticate the client.
 // Finally, connect to the socket:
-socket.connect()
+socket.connect();
 
 // Now that you are connected, you can join channels with a topic.
 const createSocket = (topicId) => {
-  let channel = socket.channel(`comments:${topicId}`, {})
+  let channel = socket.channel(`comments:${topicId}`, {});
   channel
     .join()
     .receive("ok", (resp) => {
-      renderComments(resp.comments)
+      renderComments(resp.comments);
     })
     .receive("error", (resp) => {
-      console.log("Unable to join", resp)
-    })
+      console.log("Unable to join", resp);
+    });
 
   // server broadcast
-  channel.on(`comments:${topicId}:new`, renderNewComment)
+  channel.on(`comments:${topicId}:new`, renderNewComment);
   document.querySelector("button").addEventListener("click", () => {
     channel.push("comments:add", {
       comment: document.querySelector("textarea").value,
-    })
-  })
-}
+    });
+  });
+};
 
 const renderComments = (comments) => {
-  // sorting on the client since I haven't figured out how to sort in phoenix using ecto
-  document.getElementById("comments-list").innerHTML =
-    sortArrOfObjsByPropertyValue(comments, "inserted_at")
-      .map((c) => commentTemplate(c))
-      .join("")
-}
+  document.getElementById("comments-list").innerHTML = comments
+    .map((c) => commentTemplate(c))
+    .join("");
+};
 
 // it is necessary to destructure the socket event object to get to the comment itself
 const renderNewComment = ({ comment }) => {
   // the new comment is inserted at the top
   document.getElementById("comments-list").innerHTML =
     commentTemplate(comment) +
-    document.getElementById("comments-list").innerHTML
-}
+    document.getElementById("comments-list").innerHTML;
+};
 
 const commentTemplate = (comment) => {
   return `
@@ -69,7 +66,7 @@ const commentTemplate = (comment) => {
       ${comment.comment}
     </div>
   </li>
-  `
-}
+  `;
+};
 
-window.createSocket = createSocket
+window.createSocket = createSocket;

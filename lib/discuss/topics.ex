@@ -57,8 +57,13 @@ defmodule Discuss.Topics do
       nil
 
   """
-  # select the topic by the id, get all the comments of that topic and, for each comment, get the data of the user who made the comment
-  def get_topic(id), do: Repo.get(Topic, id) |> Repo.preload(comments: [:user])
+  # select the topic by the id, get all the comments of that topic ordered by inserted_at and, for each comment, get the data of the user who made the comment
+  def get_topic(id),
+    do:
+      Topic
+      |> where(id: ^id)
+      |> preload(comments: ^{Comment |> order_by(desc: :inserted_at), [:user]})
+      |> Repo.one!()
 
   @doc """
   Creates a topic.
