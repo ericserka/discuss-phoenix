@@ -4,6 +4,7 @@
   "main": "index.js",
   "license": "MIT",
   "dependencies": {
-    "alpinejs": "^3.10.5"
+    "alpinejs": "^3.10.5",
+    "dayjs": "^1.11.6"
   }
 }
