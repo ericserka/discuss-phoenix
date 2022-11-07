@@ -58,12 +58,16 @@ defmodule Discuss.Topics do
 
   """
   # select the topic by the id, get all the comments of that topic ordered by inserted_at and, for each comment, get the data of the user who made the comment
-  def get_topic(id),
-    do:
+  def get_topic(id) do
+    try do
       Topic
       |> where(id: ^id)
       |> preload(comments: ^{Comment |> order_by(desc: :inserted_at), [:user]})
       |> Repo.one!()
+    rescue
+      Ecto.NoResultsError -> nil
+    end
+  end
 
   @doc """
   Creates a topic.
