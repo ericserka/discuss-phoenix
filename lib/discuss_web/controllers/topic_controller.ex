@@ -15,7 +15,7 @@ defmodule DiscussWeb.TopicController do
     per_page = Topics.get_per_page()
     total_pages = ceil(total_elements / per_page)
     from = (page - 1) * per_page + 1
-    until = page * per_page
+    until = if page * per_page > total_elements, do: total_elements, else: page * per_page
 
     if page > total_pages do
       conn
@@ -28,9 +28,7 @@ defmodule DiscussWeb.TopicController do
       total_elements: total_elements,
       page: page,
       total_pages: total_pages,
-      dynamic_attrs: [
-        x_data: "{currentPage: #{page}, pages: #{Jason.encode!(Enum.to_list(1..total_pages))}}"
-      ],
+      x_data: "{currentPage: #{page}, pages: #{Jason.encode!(Enum.to_list(1..total_pages))}}",
       from: from,
       until: until
     )

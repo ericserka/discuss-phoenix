@@ -51,7 +51,7 @@
             <% else %>
               <span class="pagination-prev-next-btn rounded-l-md cursor-default">&lt;</span>
             <% end %>
-            <div {@dynamic_attrs}>
+            <div x-data={@x_data}>
               <%= if @total_pages <= 7 do %>
                 <template x-for="page in pages">
                   <a :href="`/topics?page=${page}`" class="page-idx-common" :class="currentPage === page ? 'activated-page-idx' : 'not-activated-page-idx'" x-text="page"></a>
