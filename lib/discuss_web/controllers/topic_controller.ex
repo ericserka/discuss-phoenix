@@ -30,7 +30,8 @@ defmodule DiscussWeb.TopicController do
       total_pages: total_pages,
       x_data: "{currentPage: #{page}, pages: #{Jason.encode!(Enum.to_list(1..total_pages))}}",
       from: from,
-      until: until
+      until: until,
+      page_title: "All Topics"
     )
   end
 
@@ -46,7 +47,7 @@ defmodule DiscussWeb.TopicController do
 
   def new(conn, _params) do
     changeset = Topics.change_topic(%Topic{})
-    render(conn, "new.html", changeset: changeset)
+    render(conn, "new.html", changeset: changeset, page_title: "New Topic")
   end
 
   def create(conn, %{"topic" => topic_params}) do
@@ -57,7 +58,7 @@ defmodule DiscussWeb.TopicController do
         |> redirect(to: Routes.topic_path(conn, :show, topic))
 
       {:error, %Ecto.Changeset{} = changeset} ->
-        render(conn, "new.html", changeset: changeset)
+        render(conn, "new.html", changeset: changeset, page_title: "New Topic")
     end
   end
 
@@ -65,7 +66,7 @@ defmodule DiscussWeb.TopicController do
     topic = Topics.get_topic(id)
 
     if topic != nil do
-      render(conn, "show.html", topic: topic)
+      render(conn, "show.html", topic: topic, page_title: topic.title)
     else
       conn
       |> put_flash(:error, "Topic not found.")
@@ -77,7 +78,11 @@ defmodule DiscussWeb.TopicController do
     topic = Topics.get_topic(id)
 
     if topic != nil do
-      render(conn, "edit.html", topic: topic, changeset: Topics.change_topic(topic))
+      render(conn, "edit.html",
+        topic: topic,
+        changeset: Topics.change_topic(topic),
+        page_title: "Edit Topic"
+      )
     else
       conn
       |> put_flash(:error, "Topic not found.")
@@ -96,7 +101,7 @@ defmodule DiscussWeb.TopicController do
           |> redirect(to: Routes.topic_path(conn, :show, topic))
 
         {:error, %Ecto.Changeset{} = changeset} ->
-          render(conn, "edit.html", topic: topic, changeset: changeset)
+          render(conn, "edit.html", topic: topic, changeset: changeset, page_title: "Edit Topic")
       end
     else
       conn
@@ -136,7 +141,7 @@ defmodule DiscussWeb.TopicController do
       true ->
         conn
         |> put_flash(:error, "This topic does not belong to you.")
-        |> redirect(to: "/")
+        |> redirect(to: Routes.topic_path(conn, :index))
         |> halt
     end
   end
