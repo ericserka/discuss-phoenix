@@ -9,16 +9,13 @@
 <div class="m-4">
   <%# prohibits the creation of a comment if the user is not authenticated %>
   <%= if @conn.assigns.user != nil do %>
-    <textarea class="p-1 w-full"/>
+    <textarea id="comment-textarea" class="p-1 w-full"/>
     <div class="flex justify-center">
-      <button class="btn-primary">
+      <button id="add-comment-btn" class="btn-primary">
         Add comment
       </button>
       <%= link "Back", to: Routes.topic_path(@conn, :index), class: "btn-secondary ml-4" %>
     </div>
   <% end %> 
   <ul id="comments-list" class="mt-4"></ul>
-</div>
-<div class="flex justify-center m-4">
-  <%= link "Back", to: Routes.topic_path(@conn, :index), class: "btn-secondary" %>
 </div>
